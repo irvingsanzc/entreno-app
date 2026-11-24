@@ -422,6 +422,18 @@
     document.body.appendChild(o);
   }
 
+  // Confirmación propia (confirm() no funciona en todos los contenedores).
+  function confirmar(msg, accion, fn) {
+    var o = document.createElement('div');
+    o.className = 'overlay';
+    o.innerHTML = '<div class="sheet"><p class="sheet-msg">' + esc(msg) + '</p><button class="peligro">' + esc(accion) + '</button><button class="cancel">Cancelar</button></div>';
+    o.onclick = function (e) {
+      if (e.target === o || e.target.classList.contains('cancel')) { o.remove(); return; }
+      if (e.target.classList.contains('peligro')) { o.remove(); fn(); }
+    };
+    document.body.appendChild(o);
+  }
+
   function todosLosEjercicios() {
     var lista = [];
     DEF().dias.forEach(function (d) { d.ejercicios.forEach(function (e) { lista.push({ ej: e, dia: d }); }); });
@@ -517,16 +529,18 @@
         try {
           var d = JSON.parse(rd.result);
           if (!d.perfiles) throw new Error('formato');
-          if (!confirm('Esto reemplaza los datos actuales de los dos perfiles. ¿Continuar?')) return;
-          var perfilActual = S.perfil;
-          S = d; S.perfil = perfilActual; guardar(); toast('Respaldo importado'); render();
+          confirmar('Esto reemplaza los datos actuales de los dos perfiles.', 'Importar', function () {
+            var perfilActual = S.perfil;
+            S = d; S.perfil = perfilActual; guardar(); toast('Respaldo importado'); render();
+          });
         } catch (err) { toast('Archivo no válido'); }
       };
       rd.readAsText(f);
     };
     document.getElementById('reset').onclick = function () {
-      if (!confirm('¿Borrar todos los registros de ' + def.nombre + '?')) return;
-      p.logs = {}; p.semana = 1; p.alts = {}; guardar(); toast('Bloque reiniciado'); location.hash = '#/';
+      confirmar('Se borran todos los registros de ' + def.nombre + '.', 'Borrar y reiniciar', function () {
+        p.logs = {}; p.semana = 1; p.alts = {}; guardar(); toast('Bloque reiniciado'); location.hash = '#/';
+      });
     };
   }
 
