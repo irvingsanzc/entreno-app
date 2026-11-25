@@ -15,11 +15,19 @@ window.PERIODIZACION = [
   { semana: 10, fase: 'Descarga + prueba', rirC: '3', rirA: '2-3', series: 'Mitad', nota: 'Jueves: prueba de reps (RIR 1) en básicos para recalcular el siguiente bloque.' }
 ];
 
-window.PERFILES = {
+// Perfiles fijos de la versión personal (raíz). La clave `novia` se conserva
+// para no perder los registros que ya existen en el teléfono.
+window.PERFILES_PERSONALES = {
+  irving: { nombre: 'Irving', color: '#5aa6b4', unidad: 'kg', plantilla: 'irving', regla: false },
+  novia: { nombre: 'Yulieth', color: '#d07aa8', unidad: 'lb', plantilla: 'yulieth', regla: true }
+};
+
+// Plantillas de rutina. Los perfiles personales las usan en vivo (editar aquí cambia su rutina);
+// en la versión pública se copian al crear un perfil y cada persona puede editarlas.
+window.PLANTILLAS = {
   irving: {
-    nombre: 'Irving',
-    color: '#5aa6b4',
-    unidad: 'kg',
+    nombre: 'Upper/Lower · fuerza e hipertrofia',
+    desc: '4 días: Pierna A, Torso A, Pierna B, Torso B',
     dias: [
       {
         id: 'd1', nombre: 'Pierna A', dia: 'Lunes',
@@ -28,7 +36,7 @@ window.PERFILES = {
           { id: 'i12', n: 'Peso muerto rumano en Smith', t: 'C', s: 3, r: '8-10', d: 150, nota: 'Cadera atrás hasta el máximo estiramiento de isquios con la columna neutra.', alt: 'RDL con barra o mancuernas' },
           { id: 'i13', n: 'Curl femoral sentado', t: 'A', s: 3, r: '10-12', d: 90, nota: 'Torso inclinado al frente para estirar más el isquio; 2 s en la bajada.', alt: 'Curl femoral acostado' },
           { id: 'i14', n: 'Extensión de cuádriceps', t: 'A', s: 3, r: '12-15', d: 90, nota: 'Respaldo reclinado: recto femoral más estirado.', alt: 'Sissy squat asistido' },
-          { id: 'i15', n: 'Pantorrilla de pie', t: 'A', s: 3, r: '10-15', d: 90, nota: 'Pausa de 2 s abajo, en estiramiento total.', alt: 'Pantorrilla en prensa' },
+          { id: 'i15', n: 'Pantorrilla en prensa', t: 'A', s: 3, r: '10-15', d: 90, nota: 'Rodilla extendida (gemelo). Pausa de 2 s abajo, en estiramiento total.', alt: 'Pantorrilla de pie en Smith' },
           { id: 'i16', n: 'Elevación lateral en polea', t: 'A', s: 3, r: '12-20', d: 60, nota: 'Polea a la altura de la cadera, cable por detrás del cuerpo.', alt: 'Elevación lateral con mancuernas' },
           { id: 'i17', n: 'Crunch en polea', t: 'K', s: 3, r: '10-15', d: 60, nota: 'Flexiona la columna (costillas a la pelvis), no la cadera.', alt: 'Crunch en máquina' }
         ]
@@ -40,7 +48,7 @@ window.PERFILES = {
           { id: 'i22', n: 'Jalón al pecho agarre medio', t: 'C', s: 3, r: '8-10', d: 120, nota: 'Estira por completo arriba, codos hacia la cadera.', alt: 'Dominadas', prio: 2 },
           { id: 'i23', n: 'Press inclinado con mancuernas (30°)', t: 'C', s: 3, r: '8-12', d: 120, nota: 'Baja hasta sentir el pecho estirado.', alt: 'Press inclinado en Smith' },
           { id: 'i24', n: 'Remo T', t: 'C', s: 3, r: '8-12', d: 120, nota: 'Con apoyo de pecho si lo tiene. Codos a ~45°, estira al bajar.', alt: 'Remo en máquina / con mancuerna' },
-          { id: 'i25', n: 'Elevación lateral con mancuernas', t: 'A', s: 3, r: '12-20', d: 60, nota: 'Ligera inclinación al frente, sin impulso.', alt: 'Elevación lateral en máquina', prio: 1 },
+          { id: 'i25', n: 'Elevación lateral con mancuernas', t: 'A', s: 3, r: '12-20', d: 60, nota: 'Ligera inclinación al frente, sin impulso.', alt: 'Elevación lateral en polea', prio: 1 },
           { id: 'i26', n: 'Curl inclinado con mancuernas', t: 'A', s: 3, r: '10-12', d: 90, nota: 'Banco a 45-60°, brazos por detrás del torso (estiramiento).', alt: 'Curl bayesiano en polea' },
           { id: 'i27', n: 'Extensión de tríceps sobre la cabeza en polea', t: 'A', s: 3, r: '10-12', d: 90, nota: 'Cabeza larga estirada: ~40% más crecimiento del tríceps que en neutro.', alt: 'Extensión sobre la cabeza con mancuerna' },
           { id: 'i28', n: 'Pájaros en peck deck', t: 'A', s: 2, r: '15-20', d: 60, nota: 'De frente al respaldo, agarre neutro, brazos casi rectos.', alt: 'Face pull' }
@@ -54,8 +62,8 @@ window.PERFILES = {
           { id: 'i33', n: 'Sentadilla búlgara', t: 'C', s: 2, r: '8-12', d: 120, nota: 'Por pierna. Torso erguido para más cuádriceps.', alt: 'Zancadas caminando' },
           { id: 'i34', n: 'Curl femoral acostado', t: 'A', s: 3, r: '10-12', d: 90, nota: 'Otra posición distinta a la del lunes.', alt: 'Curl femoral sentado unilateral' },
           { id: 'i35', n: 'Extensión de cuádriceps', t: 'A', s: 2, r: '12-15', d: 90, nota: 'Última serie al fallo en semanas 4-5 y 8-9.', alt: 'Sissy squat asistido' },
-          { id: 'i36', n: 'Pantorrilla sentado', t: 'A', s: 3, r: '12-20', d: 60, nota: 'Rodilla flexionada (sóleo). Pausa abajo.', alt: 'Pantorrilla en prensa' },
-          { id: 'i37', n: 'Elevación lateral en polea', t: 'A', s: 3, r: '12-20', d: 60, nota: 'Puedes alternar con la versión unilateral.', alt: 'Elevación lateral en máquina' },
+          { id: 'i36', n: 'Pantorrilla sentado con mancuerna', t: 'A', s: 3, r: '12-20', d: 60, nota: 'Mancuerna sobre las rodillas, puntas en un disco o escalón. Rodilla flexionada (sóleo). Pausa abajo.', alt: 'Pantorrilla sentado en Smith' },
+          { id: 'i37', n: 'Elevación lateral en polea', t: 'A', s: 3, r: '12-20', d: 60, nota: 'Puedes alternar con la versión unilateral.', alt: 'Elevación lateral con mancuernas' },
           { id: 'i38', n: 'Rueda abdominal', t: 'K', s: 3, r: '8-12', d: 60, nota: 'Pelvis en retroversión, que la lumbar no se arquee.', alt: 'Plancha con peso / dead bug' }
         ]
       },
@@ -66,19 +74,18 @@ window.PERFILES = {
           { id: 'i42', n: 'Dominadas', t: 'C', s: 3, r: '6-10', d: 150, nota: 'Cuelga completo abajo. Con lastre si haces más de 10.', alt: 'Jalón con agarre neutro' },
           { id: 'i43', n: 'Press de pecho en máquina o fondos', t: 'C', s: 3, r: '8-12', d: 120, nota: 'En fondos inclina el torso y baja sin dolor.', alt: 'Press plano con mancuernas' },
           { id: 'i44', n: 'Remo unilateral en polea o mancuerna', t: 'C', s: 3, r: '10-12', d: 90, nota: 'Deja que el hombro se vaya al frente para estirar el dorsal.', alt: 'Remo en máquina unilateral' },
-          { id: 'i45', n: 'Elevación lateral en polea', t: 'A', s: 3, r: '12-20', d: 60, nota: 'Cuarta frecuencia de deltoides lateral.', alt: 'Elevación lateral en máquina', prio: 1 },
+          { id: 'i45', n: 'Elevación lateral en polea', t: 'A', s: 3, r: '12-20', d: 60, nota: 'Cuarta frecuencia de deltoides lateral.', alt: 'Elevación lateral con mancuernas', prio: 1 },
           { id: 'i46', n: 'Pullover en polea', t: 'A', s: 2, r: '12-15', d: 60, nota: 'Dorsal aislado y en estiramiento.', alt: 'Pullover con mancuerna' },
-          { id: 'i47', n: 'Curl en banco predicador', t: 'A', s: 2, r: '10-12', d: 90, nota: 'Énfasis en la parte baja (codo casi extendido).', alt: 'Curl en polea' },
+          { id: 'i47', n: 'Curl en polea', t: 'A', s: 2, r: '10-12', d: 90, nota: 'Polea baja, codos fijos. Controla la parte baja (codo casi extendido).', alt: 'Curl con barra Z' },
           { id: 'i48', n: 'Pushdown con cuerda', t: 'A', s: 2, r: '12-15', d: 60, nota: 'Cabezas lateral y medial.', alt: 'Pushdown con barra' },
           { id: 'i49', n: 'Face pull', t: 'A', s: 2, r: '15-20', d: 60, nota: 'Rotación externa al final.', alt: 'Pájaros en peck deck' }
         ]
       }
     ]
   },
-  novia: {
-    nombre: 'Novia',
-    color: '#d07aa8',
-    unidad: 'lb',
+  yulieth: {
+    nombre: 'Upper/Lower · énfasis en glúteo',
+    desc: '4 días: Pierna A (glúteo), Torso A, Pierna B (cuádriceps), Torso B',
     dias: [
       {
         id: 'd1', nombre: 'Pierna A · Glúteo', dia: 'Lunes',
@@ -121,7 +128,7 @@ window.PERFILES = {
         ejercicios: [
           { id: 'n41', n: 'Jalón agarre neutro / dominada asistida', t: 'C', s: 3, r: '8-12', d: 120, nota: 'Cuelga completo arriba.', alt: 'Jalón unilateral en polea' },
           { id: 'n42', n: 'Remo T', t: 'C', s: 3, r: '10-12', d: 90, nota: 'Con apoyo de pecho si lo tiene.', alt: 'Remo con mancuerna' },
-          { id: 'n43', n: 'Elevación lateral en polea', t: 'A', s: 3, r: '12-20', d: 60, nota: 'Cable por detrás del cuerpo.', alt: 'Elevación lateral en máquina' },
+          { id: 'n43', n: 'Elevación lateral en polea', t: 'A', s: 3, r: '12-20', d: 60, nota: 'Cable por detrás del cuerpo.', alt: 'Elevación lateral con mancuernas' },
           { id: 'n44', n: 'Press de pecho en máquina', t: 'C', s: 2, r: '10-12', d: 90, nota: 'Mantenimiento.', alt: 'Lagartijas con peso' },
           { id: 'n45', n: 'Face pull', t: 'A', s: 2, r: '15-20', d: 60, nota: 'Salud del hombro.', alt: 'Pájaros en peck deck' },
           { id: 'n46', n: 'Hip thrust unilateral / patada en máquina', t: 'A', s: 3, r: '12-15', d: 60, nota: 'Por pierna. Cuarta frecuencia de glúteo.', alt: 'Patada de glúteo en polea' },
