@@ -1,6 +1,6 @@
 // Service worker: guarda la app en caché para que funcione sin internet.
 // Al cambiar cualquier archivo, sube la versión para forzar la actualización.
-var VERSION = 'entreno-v8';
+var VERSION = 'entreno-v9';
 var ARCHIVOS = [
   './',
   './index.html',

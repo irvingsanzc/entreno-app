@@ -109,6 +109,17 @@
     return logs[k] || null;
   }
 
+  function restaurarSeries(log, dia, sem) {
+    dia.ejercicios.forEach(function (ej) {
+      var r = obtenerEj(log, ej, sem);
+      var n = seriesSemana(ej, sem);
+      while (r.sets.length < n) {
+        var u = r.sets[r.sets.length - 1];
+        r.sets.push({ w: u ? u.w : '', r: '', rir: '', ok: false });
+      }
+    });
+  }
+
   function obtenerEj(log, ej, semana) {
     if (!log.ej[ej.id]) {
       var n = seriesSemana(ej, semana);
@@ -499,6 +510,7 @@
       '<header class="top pad"><a href="#/" class="icon-btn" aria-label="Volver">' + ICON.atras + '</a><h1 class="grow">' + esc(dia.nombre.toUpperCase()) + '</h1><button class="icon-btn" id="btn-timer" aria-label="Temporizador">' + ICON.reloj + '</button></header>' +
       '<main class="pad dia-main">' +
       '<p class="muted">Semana ' + sem + ' · ' + esc(PERIODIZACION[sem - 1].fase) + (log.fecha ? ' · ' + fechaCorta(log.fecha) : '') + '</p>' +
+      (esNovia && !log.regla && dia.ejercicios.some(function (e) { return obtenerEj(log, e, sem).sets.length < seriesSemana(e, sem); }) ? '<button class="link" id="restaurar">↺ Restaurar series que faltan</button>' : '') +
       (esNovia ? '<label class="toggle"><input type="checkbox" id="regla"' + (log.regla ? ' checked' : '') + '> Día de regla con poca energía <small>(+1 RIR y 1 serie menos)</small></label>' : '');
 
     dia.ejercicios.forEach(function (ej, idx) {
@@ -542,6 +554,8 @@
     app.innerHTML = html;
 
     document.getElementById('btn-timer').onclick = function () { iniciarTimer(90); };
+    var rest = document.getElementById('restaurar');
+    if (rest) rest.onclick = function () { restaurarSeries(log, dia, sem); guardar(); render(); };
     var regla = document.getElementById('regla');
     if (regla) regla.onchange = function () {
       log.regla = regla.checked;
@@ -554,15 +568,7 @@
           if (r.sets.length > 1 && !last.ok && last.r === '') r.sets.pop();
         });
       } else {
-        // Al desmarcar, devolver las series que quitó la regla (hasta las que toca esta semana).
-        dia.ejercicios.forEach(function (ej) {
-          var r = obtenerEj(log, ej, sem);
-          var n = seriesSemana(ej, sem);
-          while (r.sets.length < n) {
-            var u = r.sets[r.sets.length - 1];
-            r.sets.push({ w: u ? u.w : '', r: '', rir: '', ok: false });
-          }
-        });
+        restaurarSeries(log, dia, sem);
       }
       guardar(); render();
     };
