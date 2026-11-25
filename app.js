@@ -510,7 +510,8 @@
       if (log.regla) rir = rir + ' +1';
       html += '<section class="ej" data-ej="' + ej.id + '">' +
         '<div class="ej-head"><span class="ej-num">' + (idx + 1) + '</span><div class="grow"><h3>' + esc(nombreEj(ej)) + '</h3>' +
-        '<p class="meta">' + esc(ej.r) + ' reps · RIR ' + esc(rir) + ' · ' + Math.round(ej.d / 60 * 10) / 10 + ' min</p></div>' +
+        '<p class="meta">' + esc(ej.r) + ' reps · RIR ' + esc(rir) + ' · ' + Math.round(ej.d / 60 * 10) / 10 + ' min' + (ej.ss ? ' · Superserie ' + esc(ej.ss) : '') + '</p>' +
+        (ej.tec ? '<p class="meta tec-av">⚡ ' + esc(ej.tec) + (((sem >= 3 && sem <= 5) || (sem >= 7 && sem <= 9)) ? '' : ' · <i>no esta semana</i>') + '</p>' : '') + '</div>' +
         '<button class="icon-btn mas" data-acc="menu" aria-label="Opciones">•••</button></div>' +
         (sug ? '<p class="sug ' + sug.tipo + '">' + esc(sug.txt) + '</p>' : '') +
         '<div class="sets"><div class="set-h"><span></span><span>ANTERIOR</span><span>' + unidad.toUpperCase() + '</span><span>REPS</span><span>RIR</span></div>';

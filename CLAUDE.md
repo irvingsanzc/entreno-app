@@ -16,7 +16,8 @@ Los datos viven sólo en el teléfono de cada persona (localStorage); no hay ser
   - `PERFILES_PERSONALES`: perfiles fijos de la versión personal (`irving`, `novia` → se muestra como **Yulieth**; la clave `novia` se conserva para no perder registros).
   - `PLANTILLAS` (`irving`, `yulieth`) → `dias` → `ejercicios`. Los perfiles personales las usan en vivo; en la pública se **copian** al crear el perfil.
   - `PERIODIZACION` (10 semanas).
-  - Campos de un ejercicio: `id` (estable, nunca lo reutilices: los registros se guardan por id), `n` nombre, `t` tipo (`C` compuesto, `A` aislamiento, `K` core), `s` series base, `r` rango de reps (`"8-12"`), `d` descanso en segundos, `nota` técnica, `alt` alternativa, `prio` opcional (1 = +1 serie en semanas 4-9; 2 = +1 serie en semanas 7-9).
+  - Campos de un ejercicio: `id` (estable, nunca lo reutilices: los registros se guardan por id), `n` nombre, `t` tipo (`C` compuesto, `A` aislamiento, `K` core), `s` series base, `r` rango de reps (`"8-12"`), `d` descanso en segundos, `nota` técnica, `alt` alternativa, `prio` opcional (1 = +1 serie en semanas 4-9; 2 = +1 serie en semanas 7-9), `tec` opcional (técnica avanzada de la última serie; se marca "no esta semana" fuera de las semanas 3-5 y 7-9), `ss` opcional (superserie, p. ej. `"6A"`/`"6B"`; el ejercicio A lleva `d: 0`).
+  - Días: `u1` Torso A (lun), `l1` Pierna A (mar), `u2` Torso B (mié), `l2` Pierna B (jue). Los ids viejos `d1`-`d4` ya no se usan; los ejercicios repetidos conservan su id para mantener el historial de pesos.
 - `app.js`: estado, vistas y router por hash (`#/`, `#/dia/<diaId>`, `#/progreso/<ejId>`, `#/perfil`, `#/nuevo`, `#/rutina`).
 - `styles.css`: tema oscuro tipo Efort (acento `#5aa6b4`).
 - `sw.js`: service worker en la raíz (cubre también `/publica/`). Red primero, caché sin conexión. **Sube `VERSION` cada vez que cambies un archivo.**

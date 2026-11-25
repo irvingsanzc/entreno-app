@@ -225,3 +225,5 @@ textarea:focus { outline: none; }
 .mini { width: 36px; height: 36px; border-radius: 10px; border: 0; background: var(--card2); flex: none; }
 .mini:disabled { opacity: 0.3; }
 .peligro-txt { color: var(--danger) !important; }
+
+.tec-av { color: var(--acc); font-size: 13px; }
