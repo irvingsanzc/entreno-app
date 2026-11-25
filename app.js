@@ -553,6 +553,16 @@
           // El peso puede venir autollenado: una serie "vacía" es la que no tiene reps ni está hecha.
           if (r.sets.length > 1 && !last.ok && last.r === '') r.sets.pop();
         });
+      } else {
+        // Al desmarcar, devolver las series que quitó la regla (hasta las que toca esta semana).
+        dia.ejercicios.forEach(function (ej) {
+          var r = obtenerEj(log, ej, sem);
+          var n = seriesSemana(ej, sem);
+          while (r.sets.length < n) {
+            var u = r.sets[r.sets.length - 1];
+            r.sets.push({ w: u ? u.w : '', r: '', rir: '', ok: false });
+          }
+        });
       }
       guardar(); render();
     };
